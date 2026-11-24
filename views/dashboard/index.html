@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BreezeBlue工作台</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./glass.css">
+</head>
+<body>
+  <main class="dashboard-shell">
+    <header class="dashboard-header">
+      <div class="brand"><img src="./logo.png" alt="BreezeBlue 官方图标" width="40" height="40"><div><h1>BreezeBlue工作台</h1><span class="muted">积分与语音</span></div></div>
+    </header>
+    <div id="notice" role="status" aria-live="polite">正在连接...</div>
+    <div class="dashboard-columns">
+      <aside id="credits-column" class="credits-column" aria-labelledby="credits-title">
+        <h2 id="credits-title" class="column-title"><i data-lucide="coins"></i>积分服务</h2>
+        <section id="account" class="tool-section" aria-labelledby="account-title">
+          <div class="section-head"><h3 id="account-title">账号认证</h3><span id="session" class="status-pill">未绑定</span></div>
+          <dl class="account-info">
+            <div id="account-name-row" hidden><dt>用户名</dt><dd id="account-name"></dd></div>
+            <div id="account-email-row" hidden><dt>邮箱</dt><dd id="account-email"></dd></div>
+            <div><dt>凭据来源</dt><dd>Cookie</dd></div>
+            <div><dt>最近验证</dt><dd id="verified-at">--</dd></div>
+          </dl>
+          <details id="cookie-entry" open>
+            <summary><i data-lucide="key-round"></i>账号 Cookie</summary>
+            <a id="cookie-website" class="cookie-website" href="https://breezeblue.ai/app/home" target="_blank" rel="noopener noreferrer" title="打开官网"><i data-lucide="external-link"></i><span>打开官网</span></a>
+            <div class="website-row"><input id="website-url" aria-label="BreezeBlue 官网地址" value="https://breezeblue.ai/app/home" readonly><button id="copy-website" type="button" class="icon" title="复制官网地址" aria-label="复制官网地址"><i data-lucide="copy"></i></button></div>
+            <form id="session-form">
+              <label for="cookie">breeze_blue_session / Cookie JSON</label>
+              <textarea id="cookie" rows="3" autocomplete="off" spellcheck="false" required aria-label="登录 Cookie"></textarea>
+              <div class="form-actions"><button class="primary" type="submit" data-operation><i data-lucide="key-round"></i>验证并保存</button><button id="clear" type="button" class="danger" data-operation><i data-lucide="unlink"></i>解除绑定</button></div>
+            </form>
+          </details>
+        </section>
+        <section class="tool-section" aria-labelledby="credits-balance-title">
+          <div class="section-head"><h3 id="credits-balance-title">积分与用量</h3><button type="button" id="refresh" class="icon" title="刷新积分余额" aria-label="刷新积分余额" data-operation><i data-lucide="refresh-cw"></i></button></div>
+          <div class="balance-display"><span class="muted">可用总积分</span><div><strong id="balance">--</strong><span class="muted">积分</span></div></div>
+          <dl class="credit-facts"><div><dt>今日可领积分</dt><dd id="amount">--</dd></div><div><dt>下次可领时间</dt><dd id="reset">--</dd></div></dl>
+          <button id="open-history" type="button" class="row-command"><i data-lucide="history"></i><span>查看全部积分记录</span><span id="history-count" class="muted">0 笔</span><i data-lucide="chevron-right"></i></button>
+          <button id="open-checkin" type="button" class="checkin-row"><i data-lucide="calendar-check"></i><span>每日签到</span><span id="today" class="status-pill">--</span><i data-lucide="chevron-right"></i></button>
+          <div id="updated" class="muted updated"></div>
+        </section>
+        <details id="schedule" class="tool-section">
+          <summary><i data-lucide="clock-3"></i>自动签到服务</summary>
+          <form id="config-form">
+            <div class="setting"><label for="auto_claim">自动签到</label><input type="checkbox" role="switch" id="auto_claim"></div>
+            <fieldset id="schedule-options">
+            <div class="setting"><label for="claim_time">签到时间</label><input type="time" id="claim_time" required></div>
+            <div class="setting"><label for="timezone">时区</label><input id="timezone" required list="zones"><datalist id="zones"><option value="Asia/Shanghai"><option value="UTC"><option value="Asia/Tokyo"></datalist></div>
+            </fieldset>
+            <div class="setting"><span>下一次计划</span><span id="next-run" class="muted">-</span></div>
+            <div class="setting"><span>今日自动尝试</span><span id="retries">0 / 3</span></div>
+            <div class="form-actions"><button class="primary" type="submit" id="save"><i data-lucide="save"></i>保存设置</button></div>
+          </form>
+        </details>
+      </aside>
+      <section id="speech-column" class="speech-column" aria-labelledby="speech-title">
+        <div class="column-heading"><h2 id="speech-title" class="column-title"><i data-lucide="audio-lines"></i>语音配置</h2></div>
+        <section id="speech" class="speech-settings" aria-label="语音设置">
+          <form id="tts-form">
+            <div class="settings-grid connection-grid">
+              <div class="field"><label for="api_key">API Key</label><input id="api_key" type="password" autocomplete="off" spellcheck="false" maxlength="300" placeholder="brz_..."><div id="key-state" class="muted key-state"></div></div>
+              <div class="field"><label for="voice_id">音色 ID</label><input id="voice_id" maxlength="160" autocomplete="off" spellcheck="false"></div>
+            </div>
+            <div class="form-actions connection-actions"><button id="save-key" type="button" class="primary" title="保存 API Key 和音色 ID"><i data-lucide="save"></i>保存连接</button></div>
+            <div class="core-settings">
+              <div class="setting"><label for="tts-enabled">启用语音回复</label><input id="tts-enabled" type="checkbox" role="switch"></div>
+              <div class="settings-grid reply-settings-grid">
+                <fieldset id="reply-policy">
+                  <legend>回复策略</legend>
+                  <div class="setting"><label for="smart_voice">智能判断</label><input id="smart_voice" type="checkbox" role="switch"></div>
+                  <div id="probability-setting" class="range-field probability-setting" title="智能判断关闭时生效"><div><label for="voice_probability">语音回复概率</label><output id="prob-value">100%</output></div><input id="voice_probability" type="range" min="0" max="100" step="1"></div>
+                </fieldset>
+                <div id="speech-output" class="speech-output">
+                  <h3>语音效果</h3>
+                  <div class="range-field"><div><label for="speed">语速</label><output id="speed-value">1.00×</output></div><input id="speed" type="range" min="0.5" max="2" step="0.05"></div>
+                </div>
+              </div>
+            </div>
+            <details id="advanced-tts">
+              <summary><i data-lucide="settings-2"></i>高级语音设置</summary>
+              <div class="settings-grid advanced-grid">
+                <div class="field"><label for="base_url">API 地址</label><input id="base_url" type="url" required></div>
+                <div class="field"><label for="language_code">语言代码</label><input id="language_code" maxlength="2" required></div>
+                <div class="field"><label for="max_chars">单条字数上限</label><input id="max_chars" type="number" min="10" max="2000" required></div>
+                <div class="field"><label for="group_whitelist">群白名单</label><input id="group_whitelist"></div>
+                <div class="field wide"><label for="style_prompt">发音风格</label><textarea id="style_prompt" rows="2" maxlength="500"></textarea></div>
+              </div>
+              <div class="setting"><label for="keep_text">同时保留文字</label><input id="keep_text" type="checkbox" role="switch"></div>
+            </details>
+            <div class="form-actions"><button type="submit" class="primary"><i data-lucide="save"></i>保存语音配置</button></div>
+          </form>
+        </section>
+        <section id="voices" class="voice-section" aria-labelledby="voices-title">
+          <div class="section-head"><h3 id="voices-title">音色</h3><button id="open-design" type="button"><i data-lucide="sliders-horizontal"></i>设计音色</button></div>
+          <div id="current-voice" class="current-voice"><span class="voice-avatar"><i data-lucide="mic"></i></span><div class="voice-info"><strong id="current-voice-name">未选择音色</strong><span id="current-voice-id"></span></div><button id="current-play" type="button" class="icon" title="试听当前音色" aria-label="试听当前音色" data-tts-operation><i data-lucide="play"></i></button></div>
+          <audio id="current-audio" controls preload="none" aria-label="当前音色试听" hidden></audio>
+          <form id="voice-search" class="search-row"><input id="voice-search-text" aria-label="搜索音色" placeholder="搜索音色名称或描述"><button type="submit" class="icon" title="搜索音色" aria-label="搜索音色" data-tts-operation><i data-lucide="search"></i></button></form>
+          <div id="voice-list" class="voice-list"><div class="empty">暂无音色</div></div>
+        </section>
+      </section>
+    </div>
+    <footer><span id="task-state">空闲</span><span id="server-time"></span></footer>
+  </main>
+  <dialog id="unbind-dialog" aria-labelledby="unbind-title"><div class="dialog-head"><h2 id="unbind-title">解除账号绑定</h2><button class="icon" type="button" data-close-dialog="unbind-dialog" title="取消解除绑定" aria-label="取消解除绑定"><i data-lucide="x"></i></button></div><p>解除绑定会删除已保存的 Cookie，领取记录仍保留。</p><div class="form-actions"><button id="confirm-unbind" type="button" class="danger"><i data-lucide="unlink"></i>解除绑定</button></div></dialog>
+  <dialog id="history-dialog" aria-labelledby="history-title"><div class="dialog-head"><h2 id="history-title">领取积分记录</h2><button class="icon" type="button" data-close-dialog="history-dialog" title="关闭记录" aria-label="关闭记录"><i data-lucide="x"></i></button></div><section id="history"><div class="table-wrap"><table><thead><tr><th>时间</th><th>来源</th><th>结果</th><th>积分</th><th>余额</th></tr></thead><tbody id="records"></tbody></table></div><div id="empty" class="empty">暂无领取记录</div></section></dialog>
+  <dialog id="checkin-dialog" aria-labelledby="checkin-title">
+    <div class="dialog-head"><h2 id="checkin-title">每日签到</h2><div class="dialog-tools"><button id="refresh-checkin" class="icon" type="button" data-operation title="刷新签到状态" aria-label="刷新签到状态"><i data-lucide="refresh-cw"></i></button><button class="icon" type="button" data-close-dialog="checkin-dialog" title="关闭日历" aria-label="关闭日历"><i data-lucide="x"></i></button></div></div>
+    <div class="reward-row"><div><span class="muted">今日签到额度</span><strong id="calendar-reward">--</strong></div><button id="claim" class="primary" type="button" data-operation><i data-lucide="gift"></i>立即签到领取</button></div>
+    <div class="calendar-toolbar"><div class="dialog-tools"><button id="month-prev" class="icon" type="button" title="上个月" aria-label="上个月"><i data-lucide="chevron-left"></i></button><h3 id="calendar-month"></h3><button id="month-next" class="icon" type="button" title="下个月" aria-label="下个月"><i data-lucide="chevron-right"></i></button></div><button id="month-today" type="button" class="icon" title="回到本月" aria-label="回到本月"><i data-lucide="calendar-days"></i></button></div>
+    <div class="calendar-weekdays" aria-hidden="true"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+    <div id="calendar-grid" class="calendar-grid" aria-label="签到日期"></div>
+    <div class="calendar-footer"><span id="calendar-count"></span><span id="calendar-zone" class="muted"></span></div><div id="calendar-notice" role="status" aria-live="polite"></div>
+  </dialog>
+  <dialog id="design-dialog"><form id="design-form"><div class="dialog-head"><h2>设计音色</h2><button id="close-design" class="icon" type="button" title="关闭" aria-label="关闭"><i data-lucide="x"></i></button></div><label for="design-description">音色描述</label><textarea id="design-description" rows="3" minlength="3" maxlength="500" required></textarea><label for="design-text" class="field-label">试听文字</label><textarea id="design-text" rows="2" maxlength="500"></textarea><div class="form-actions"><button type="submit" class="primary" data-tts-operation><i data-lucide="sparkles"></i>生成预览</button></div></form><div id="design-previews"></div><form id="design-save" hidden><label for="design-name" class="field-label">音色名称</label><input id="design-name" maxlength="80" required><div class="form-actions"><button type="submit" class="primary" data-tts-operation><i data-lucide="check"></i>保存并使用</button></div></form><p id="design-notice" role="status"></p></dialog>
+  <script src="./lucide.min.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
