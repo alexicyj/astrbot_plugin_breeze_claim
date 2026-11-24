@@ -1,0 +1,7 @@
+name: astrbot_plugin_breeze_claim
+display_name: BreezeBlue工作台
+desc: BreezeBlue工作台：积分查询与自动签到、智能语音回复、语音库试听及音色设计。
+version: v1.2.6
+author: alexicyj & contributors
+repo: https://github.com/alexicyj/astrbot_plugin_breeze_claim
+astrbot_version: ">=4.29.4,<5"

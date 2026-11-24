@@ -1,0 +1,27 @@
+{
+  "credits": {
+    "description": "启用积分服务", "type": "object",
+    "items": {
+      "auto_claim": {"description": "自动签到", "type": "bool", "default": true},
+      "claim_time": {"description": "签到时间", "type": "string", "default": "08:10", "hint": "24 小时制 HH:MM"},
+      "timezone": {"description": "时区", "type": "string", "default": "Asia/Shanghai"}
+    }
+  },
+  "tts": {
+    "description": "语音配置", "type": "object",
+    "items": {
+      "enabled": {"description": "启用语音回复", "type": "bool", "default": true},
+      "api_key": {"description": "Breeze API Key", "type": "string", "default": "", "secret": true},
+      "voice_id": {"description": "音色 ID", "type": "string", "default": "voc_u3nxkd5578wc"},
+      "voice_probability": {"description": "语音回复概率", "type": "int", "default": 100, "slider": {"min": 0, "max": 100, "step": 1}, "hint": "智能判断关闭时生效"},
+      "smart_voice": {"description": "智能判断文字或语音", "type": "bool", "default": true},
+      "style_prompt": {"description": "发音风格", "type": "text", "default": ""},
+      "speed": {"description": "语速", "type": "float", "default": 1.0, "slider": {"min": 0.5, "max": 2.0, "step": 0.05}},
+      "language_code": {"description": "语言代码", "type": "string", "default": "zh"},
+      "max_chars": {"description": "单条字数上限", "type": "int", "default": 1000, "slider": {"min": 10, "max": 2000, "step": 10}},
+      "keep_text": {"description": "同时保留文字", "type": "bool", "default": false},
+      "group_whitelist": {"description": "群白名单", "type": "text", "default": "", "hint": "英文逗号分隔，留空表示所有群"},
+      "base_url": {"description": "Breeze API 地址", "type": "string", "default": "https://api.breeze.blue"}
+    }
+  }
+}
